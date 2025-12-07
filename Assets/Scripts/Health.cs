@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    public event Action<float> UpdateHealth;
     [field: SerializeField] public float max { get; private set; } = 10f;
     private float _current;
 
@@ -15,12 +17,22 @@ public class Health : MonoBehaviour
     {
         _current -= value;
         if (_current <= 0) _current = 0;
-        
-        Debug.Log($"Обьект {name}: ,было - {_current + value}, стало {_current}");
+        UpdateHealth?.Invoke(_current);
+    }
+
+    public void ApplyDelayDamage(float delay, float damage)
+    {
+        StartCoroutine(DelayDamage(delay, damage));
+    }
+
+    private IEnumerator DelayDamage(float delay, float damage)
+    {
+        yield return new WaitForSeconds(delay);
+        ApplyDamage(damage);
     }
 }
 
-interface IHealth
+public interface IHealth
 {
     Health health { get; }
 }
