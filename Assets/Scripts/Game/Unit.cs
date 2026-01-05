@@ -19,7 +19,21 @@ public class Unit : MonoBehaviour, IHealth, IDestroyed
 
     private UnitState _currentState;
 
-    private void Start()
+    public void Init(bool isEnemy)
+    {
+        this.isEnemy = isEnemy;
+        
+        _animation.Init(this);
+        
+        CreateStates();
+        _currentState = _defaultState;
+        _currentState.Init();
+
+        health.UpdateHealth += CheckDestroy;
+        
+        // Destroyed?.Invoke();
+    }
+    /*private void Start()
     {
         _animation.Init(this);
         CreateStates();
@@ -30,8 +44,8 @@ public class Unit : MonoBehaviour, IHealth, IDestroyed
         health.UpdateHealth += CheckDestroy;
         
         Destroyed?.Invoke();
-    }
-
+    }*/
+    
     private void Update()
     {
         _currentState.Run();

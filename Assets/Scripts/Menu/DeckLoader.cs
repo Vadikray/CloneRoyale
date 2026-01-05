@@ -18,7 +18,7 @@ public class DeckLoader : MonoBehaviour
     {
         Network.Instance.Post(
             URLLibrary.MAIN + URLLibrary.GETDECKINFO,
-            new Dictionary<string, string> {{"userID", "13" /*UserInfo.Instance.ID.ToString()*/}},
+            new Dictionary<string, string> {{"userID", UserInfo.Instance.ID.ToString()}},
             SuccessLoad,
             ErrorLoad);
     }
